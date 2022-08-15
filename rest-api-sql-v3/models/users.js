@@ -17,7 +17,7 @@
 	allowNull: false,
 	validate: {
         notEmpty: {
-          msg: 'Please provide a valid value for first name',
+          msg: 'First name is required'
         }
       },
 	},
@@ -26,33 +26,41 @@
 	allowNull: false,
 	validate: {
         notEmpty: {
-          msg: 'Please provide a valid value for last name',
+          msg: 'Last name is required'
         }
       },
 	},
 	emailAddress: {
 	type: Sequelize.STRING,
 	allowNull: false,
+	unique: {
+		msg: 'The email you entered already exists'
+	},
 	validate: {
         notEmpty: {
-          msg: 'Please provide a valid value for email address',
-        }
-      },
-	},
-	password: {
-	type: Sequelize.STRING,
-	allowNull: false,
-	hashedPassword: {
-		type: DataTypes.STRING(64),
-		validate: {
-		notEmpty: {
-		msg: 'Please provide a valid value password',
-		},
-		is: /^[0-9a-f]{64}$/i
+          msg: 'An email is required'
+        },
+		isEmail: {
+			msg: 'Please provide a valid value for email address'
 		}
-	  }
+      }
 	},
-	}, { sequelize });
+	confirmedPassword: {
+	type: Sequelize.VIRTUAL,
+	allowNull: false,
+	set(val) {
+			if ( val === this.password ) {
+				const hashedPassword = bcrypt.hashSync(val, 10);
+				this.setDataValue('confirmedPassword', hashedPassword);
+			}
+		},
+	validate: {
+		notNull: {
+			msg: 'Both passwords must match'
+		}
+	}		
+  },
+ }, { sequelize });
 	
     // TODO Add associations.
 	User.associate = (models) => {

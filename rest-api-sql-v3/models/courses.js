@@ -18,7 +18,7 @@
 	allowNull: false,
 	validate: {
         notEmpty: {
-          msg: 'Please provide a valid value for description',
+          msg: 'Please provide a value for description',
         }
       },
 	},
@@ -27,7 +27,7 @@
 	allowNull: false,
 	validate: {
         notEmpty: {
-          msg: 'Please provide a valid value for estimated time',
+          msg: 'Please provide a value for estimated time',
         }
       },
 	},
@@ -36,7 +36,7 @@
 	allowNull: false,
 	validate: {
         notEmpty: {
-          msg: 'Please provide a valid value for materials needed',
+          msg: 'Please provide a value for materials needed',
         }
       },
 	},
