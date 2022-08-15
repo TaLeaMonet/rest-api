@@ -7,18 +7,38 @@
 	title: {
 	type: Sequelize.STRING,
 	allowNull: false,
+	validate: {
+        notEmpty: {
+          msg: 'Please provide a value for title',
+        }
+      },
 	},
 	description: {
 	type: Sequelize.TEXT,
 	allowNull: false,
+	validate: {
+        notEmpty: {
+          msg: 'Please provide a valid value for description',
+        }
+      },
 	},
 	estimatedTime: {
 	type: Sequelize.STRING,
 	allowNull: false,
+	validate: {
+        notEmpty: {
+          msg: 'Please provide a valid value for estimated time',
+        }
+      },
 	},
 	materialsNeeded: {
 	type: Sequelize.STRING,
 	allowNull: false,
+	validate: {
+        notEmpty: {
+          msg: 'Please provide a valid value for materials needed',
+        }
+      },
 	},
 	}, { sequelize });
 	
