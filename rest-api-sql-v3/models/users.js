@@ -67,6 +67,6 @@
 	User.hasMany(models.Course);
 	};
 	
-	return Person;
+	return User;
 	};
 

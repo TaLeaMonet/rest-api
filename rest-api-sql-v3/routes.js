@@ -1,7 +1,7 @@
 const { application } = require('express');
 var express = require('express');
 var router = express.Router();
-var course = require( '../models').Course;
+var course = require( './models').Course;
 
 /* Custom middleware for error handling */
 function asyncHandler(cb){
@@ -13,97 +13,6 @@ function asyncHandler(cb){
     }
   };
 }
-
-/* GET api/users - returns all properties and values for current auth user */ 
-router.get('api/users', authenticateUser, asyncHandler((req, res) => {
-   //may need to use WHERE clause inside .findOne() method. 
-  const user = await User.findOne();
-  res.status(200);
-}));
-/* POST /api/users - creates a new user */
-router.post('api/users', authenticateUser, asyncHandler((req, res) => {
-    try {
-    const user = await User.create(req.body);
-    res.status(201);
-    } catch (err) {
-    console.log('ERROR:', err.name);
-    }
-    if(err.name === 'SequelizeValidationError' || err.name === 'SequelizeUniqueConstraint') {
-      const errors = await error.errors.map(err => err.message);
-      res.status(400).json({ errors })
-    } else {
-      throw err; 
-    }
-}));
-
-
-/* GET api/courses - returns all courses including User associated */
-router.get('api/courses', asyncHandler((req, res, next) => {
-        const courses = await Course.findAll({
-          include: [
-            {
-              model: User,
-            },
-          ],
-        });
-        res.status(200);
-  }));
-
-/* GET api/courses/:id - returns corresponding course and associated User */
-router.get('api/courses/:id', asyncHandler((req, res, next) => {
-      const course = await Course.findByPk(req.params.id, {
-        include: [
-          {
-            model: User,
-          },
-        ],
-      });
-      res.status(200);
-  }));
-
-/* POST api/courses - creates a new course */
-router.post('api/courses', asyncHandler((req, res, next) => {
-    try {
-    const course = await Course.create();
-    res.status(201);
-    } catch (err) {
-      console.log('ERROR:', err.name);
-
-      if(err.name === 'SequelizeValidationError' || err.name === 'SequelizeUniqueConstraint') {
-      const errors = await error.errors.map(err => err.message);
-      res.status(400).json({ errors })
-    } else {
-      throw err; 
-  }
-    }
-  }));
-/* PUT api/courses/:id - updates the corresponding course  */
-router.put('api/courses/:id', asyncHandler((req, res, next) => {
-      try {
-      const course = await Course.update(req.params.id);
-      res.status(201);
-      } catch (err) {
-        console.log('ERROR:', err.name);
-
-        if(err.name === 'SequelizeValidationError' || err.name === 'SequelizeUniqueConstraint') {
-        const errors = await error.errors.map(err => err.message);
-        res.status(400).json({ errors })
-      } else {
-        throw err; 
-      }
-      }
-  }));
-
-/* DELETE api/courses/:id - deletes the corresponding course */
-router.delete('api/courses/:id', asyncHandler((req, res, next) => {
-      try {
-      const course = await Course.findByPK(req.params.id);
-      await course.destroy()
-      res.status(204).end();
-      } catch (err) {
-        res.status(500).json({message: err.message});
-      }
-}));
 
 /* User Authentication Middleware */
 
@@ -154,5 +63,96 @@ if (message) {
 }
 };
 
+
+/* GET api/users - returns all properties and values for current auth user */ 
+router.get('api/users', authenticateUser, asyncHandler(async(req, res) => {
+   //may need to use WHERE clause inside .findOne() method. 
+  const user = await User.findOne();
+  res.status(200);
+}));
+/* POST /api/users - creates a new user */
+router.post('api/users', authenticateUser, asyncHandler(async(req, res) => {
+    try {
+    const user = await User.create(req.body);
+    res.status(201);
+    } catch (err) {
+    console.log('ERROR:', err.name);
+    }
+    if(err.name === 'SequelizeValidationError' || err.name === 'SequelizeUniqueConstraint') {
+      const errors = await error.errors.map(err => err.message);
+      res.status(400).json({ errors })
+    } else {
+      throw err; 
+    }
+}));
+
+
+/* GET api/courses - returns all courses including User associated */
+router.get('api/courses', asyncHandler(async(req, res, next) => {
+        const courses = await Course.findAll({
+          include: [
+            {
+              model: User,
+            },
+          ],
+        });
+        res.status(200);
+  }));
+
+/* GET api/courses/:id - returns corresponding course and associated User */
+router.get('api/courses/:id', asyncHandler(async(req, res, next) => {
+      const course = await Course.findByPk(req.params.id, {
+        include: [
+          {
+            model: User,
+          },
+        ],
+      });
+      res.status(200);
+  }));
+
+/* POST api/courses - creates a new course */
+router.post('api/courses', asyncHandler(async(req, res, next) => {
+    try {
+    const course = await Course.create();
+    res.status(201);
+    } catch (err) {
+      console.log('ERROR:', err.name);
+
+      if(err.name === 'SequelizeValidationError' || err.name === 'SequelizeUniqueConstraint') {
+      const errors = await error.errors.map(err => err.message);
+      res.status(400).json({ errors })
+    } else {
+      throw err; 
+  }
+    }
+  }));
+/* PUT api/courses/:id - updates the corresponding course  */
+router.put('api/courses/:id', asyncHandler(async(req, res, next) => {
+      try {
+      const course = await Course.update(req.params.id);
+      res.status(201);
+      } catch (err) {
+        console.log('ERROR:', err.name);
+
+        if(err.name === 'SequelizeValidationError' || err.name === 'SequelizeUniqueConstraint') {
+        const errors = await error.errors.map(err => err.message);
+        res.status(400).json({ errors })
+      } else {
+        throw err; 
+      }
+      }
+  }));
+
+/* DELETE api/courses/:id - deletes the corresponding course */
+router.delete('api/courses/:id', asyncHandler(async(req, res, next) => {
+      try {
+      const course = await Course.findByPK(req.params.id);
+      await course.destroy()
+      res.status(204).end();
+      } catch (err) {
+        res.status(500).json({message: err.message});
+      }
+}));
 
 module.exports = router; 
