@@ -15,7 +15,6 @@ function asyncHandler(cb){
 }
 
 /* User Authentication Middleware */
-
 const  authenticateUser = (req, res, next) => {
   // Parse the user's credentials from the Authorization header.
   const credentials = auth(req);
@@ -151,7 +150,7 @@ router.delete('api/courses/:id', asyncHandler(async(req, res, next) => {
       await course.destroy()
       res.status(204).end();
       } catch (err) {
-        res.status(500).json({message: err.message});
+        res.status(500).json({message: err.message})
       }
 }));
 
