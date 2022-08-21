@@ -43,9 +43,9 @@
 	}, { sequelize });
 	
 	Course.associate = (models) => {
-	// TODO Add associations.
-	Course.belongsTo(models.User);
-	
+		Course.belongsTo(models.User, {
+			foreignKey: "userId"
+		});
 	};
 	
 	return Course;

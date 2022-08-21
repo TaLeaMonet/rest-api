@@ -45,26 +45,27 @@
 		}
       }
 	},
-	confirmedPassword: {
-	type: Sequelize.VIRTUAL,
+	password: {
+	type: Sequelize.STRING,
 	allowNull: false,
 	set(val) {
 			if ( val === this.password ) {
 				const hashedPassword = bcrypt.hashSync(val, 10);
-				this.setDataValue('confirmedPassword', hashedPassword);
+				this.setDataValue('password', hashedPassword);
 			}
 		},
 	validate: {
 		notNull: {
-			msg: 'Both passwords must match'
+			msg: 'Please provide a value for password'
 		}
 	}		
   },
  }, { sequelize });
 	
-    // TODO Add associations.
 	User.associate = (models) => {
-	User.hasMany(models.Course);
+		User.hasMany(models.Course, {
+			foreignKey:'userId'
+		});
 	};
 	
 	return User;
