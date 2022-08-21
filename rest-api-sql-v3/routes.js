@@ -29,20 +29,21 @@ router.get('/users',
 
 /* POST /api/users - creates a new user */
 router.post('/users',
-//  authenticateUser, 
+  // authenticateUser, 
  asyncHandler(async(req, res) => {
     try {
     const user = await User.create(req.body);
     res.status(201).json(user);
-    } catch (err) {
+    }  catch(err) {
     console.log('ERROR:', err.name);
-    }
+    
     if(err.name === 'SequelizeValidationError' || err.name === 'SequelizeUniqueConstraint') {
       const errors = await error.errors.map(err => err.message);
       res.status(400).json({ errors })
     } else {
       throw err; 
     }
+  }
 }));
 
 /* GET api/courses - returns all courses including User associated */
@@ -59,7 +60,7 @@ router.get('/courses', asyncHandler(async(req, res, next) => {
 
 /* GET api/courses/:id - returns corresponding course and associated User */
 router.get('/courses/:id', asyncHandler(async(req, res, next) => {
-      const course = await Course.findByPk(req.params.id, {
+      const course = await Course.findOne(req.params.id, {
         include: [
           {
             model: User,
@@ -76,10 +77,10 @@ asyncHandler(async(req, res, next) => {
     try {
     const course = await Course.create();
     res.status(201);
-    } catch (error) {
-      console.log('ERROR:', error.name);
+    } catch (err) {
+      console.log('ERROR:', err.name);
 
-      if(error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraint') {
+      if(err.name === 'SequelizeValidationError' || err.name === 'SequelizeUniqueConstraint') {
       const errors = await error.errors.map(err => err.message);
       res.status(400).json({ errors })
     } else {
