@@ -26,7 +26,7 @@ router.get('/users', authenticateUser, asyncHandler(async(req, res) => {
 
 
 /* POST /api/users - creates a new user */
-router.post('/users', authenticateUser, asyncHandler(async(req, res) => {
+router.post('/users', asyncHandler(async(req, res) => {
     try {
     const user = await User.create(req.body);
     res.status(201).location("/").end();
