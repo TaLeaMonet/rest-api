@@ -24,7 +24,7 @@
 	},
 	estimatedTime: {
 	type: Sequelize.STRING,
-	allowNull: false,
+	allowNull: true,
 	validate: {
         notEmpty: {
           msg: 'Please provide a value for estimated time',
@@ -33,7 +33,7 @@
 	},
 	materialsNeeded: {
 	type: Sequelize.STRING,
-	allowNull: false,
+	allowNull: true,
 	validate: {
         notEmpty: {
           msg: 'Please provide a value for materials needed',
